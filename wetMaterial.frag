@@ -3,13 +3,13 @@
 // <node_builder>
 
 // uniforms
-uniform sampler2D nodeUniform0; 
+
 // attributes
 
 // varys
-varying vec2 nodeVary0; varying vec3 nodeVary1; varying vec3 nodeVary2; 
+varying vec3 nodeVary0; varying vec3 nodeVary1; 
 // vars
-vec4 nodeVar0; vec3 nodeVar1; vec3 nodeVar2; vec3 nodeVar3; vec3 nodeVar4; float nodeVar5; float nodeVar6; vec4 nodeVar7; vec3 nodeVar8; float nodeVar9; 
+vec3 nodeVar0; vec3 nodeVar1; float nodeVar2; float nodeVar3; vec4 nodeVar4; vec3 nodeVar5; 
 // codes
 
 // variables
@@ -117,26 +117,21 @@ void main() {
 	#include <logdepthbuf_fragment>
 	#include <map_fragment>
 	#include <color_fragment>
-nodeVar0 = ( texture2D( nodeUniform0, nodeVary0 ) );
-	nodeVar1 = (mix( vec4( 0.8941176470588236, 0.9254901960784314, 0.3137254901960784, 1 ).xyz, vec3(dot( vec4( 0.8941176470588236, 0.9254901960784314, 0.3137254901960784, 1 ).xyz, vec3( 0.299, 0.587, 0.114 ))), 0.8 ));
-	nodeVar2 = clamp( nodeVar1, 0.0, 1.0 );
-	nodeVar3 = (normalize(nodeVary1));
-	nodeVar4 = normalize(nodeVar3);
-	nodeVar5 = ( nodeVar4.y + 1.0 );
-	nodeVar6 = ( nodeVar5 / 2.0 );
-	nodeVar7 = (mix(nodeVar0, vec4( nodeVar2, 1.0 ), vec4( vec3( nodeVar6 ), 1.0 )));
+nodeVar0 = (normalize(nodeVary0));
+	nodeVar1 = normalize(nodeVar0);
+	nodeVar2 = ( nodeVar1.y + 1.0 );
+	nodeVar3 = ( nodeVar2 / 2.0 );
+	nodeVar4 = (mix(vec4( 0.6431372549019608, 0.9254901960784314, 0.17254901960784313, 1 ), vec4( 0.9333333333333333, 0.11372549019607843, 0.7607843137254902, 1 ), vec4( vec3( nodeVar3 ), 1.0 )));
 		
-	nodeVar8 = ( nodeVar7.xyz * vec3( 1, 1, 1 ) );
+	nodeVar5 = ( nodeVar4.xyz * vec3( 1, 1, 1 ) );
 	
-	diffuseColor = vec4( nodeVar8, 1.0 );
+	diffuseColor = vec4( nodeVar5, 1.0 );
 
 	#include <alphamap_fragment>
 	#include <alphatest_fragment>
 	#include <roughnessmap_fragment>
-nodeVar9 = (mix(0.5, 0.03, nodeVar6));
-		
-	
-	roughnessFactor = nodeVar9;
+
+	roughnessFactor = 0.0;
 
 	#include <metalnessmap_fragment>
 	#include <normal_fragment_begin>

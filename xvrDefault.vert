@@ -7,7 +7,7 @@ uniform mat3 _normalMatrix; uniform mat4 _viewMatrix;
 // attributes
 
 // varys
-varying vec3 nodeVary0; varying vec3 nodeVary1; 
+varying vec2 nodeVary0; varying vec3 nodeVary1; varying vec3 nodeVary2; varying vec3 nodeVary3; 
 // vars
 vec3 nodeVar0; vec4 nodeVar1; vec4 nodeVar2; vec3 nodeVar3; vec3 nodeVar4; 
 // codes
@@ -45,13 +45,15 @@ varying vec3 vViewPosition;
 #include <clipping_planes_pars_vertex>
 
 void main() {
-nodeVary1 = normal;
-	nodeVar0 = ( _normalMatrix * nodeVary1 );
+nodeVary0 = uv;
+	nodeVary1 = position;
+	nodeVary3 = normal;
+	nodeVar0 = ( _normalMatrix * nodeVary3 );
 	nodeVar1 = ( vec4( nodeVar0, 0.0 ) );
 	nodeVar2 = ( nodeVar1 * _viewMatrix );
 	nodeVar3 = normalize( nodeVar2.xyz );
 	nodeVar4 = nodeVar3;
-	nodeVary0 = nodeVar4;
+	nodeVary2 = nodeVar4;
 	
 
 

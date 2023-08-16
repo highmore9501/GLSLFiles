@@ -3,13 +3,13 @@
 // <node_builder>
 
 // uniforms
-
+uniform sampler2D rockCR; uniform sampler2D grassCR; uniform sampler2D snowCR; uniform sampler2D grassNormal; 
 // attributes
 
 // varys
-varying vec3 nodeVary0; 
+varying vec2 nodeVary0; varying vec3 nodeVary1; varying vec3 nodeVary2; varying vec3 nodeVary3; 
 // vars
-float nodeVar0; vec4 nodeVar1; vec3 nodeVar2; 
+vec2 nodeVar0; vec4 nodeVar1; vec4 nodeVar2; vec4 nodeVar3; float nodeVar4; float nodeVar5; float nodeVar6; float nodeVar7; vec4 nodeVar8; vec3 nodeVar9; vec3 nodeVar10; float nodeVar11; float nodeVar12; vec4 nodeVar13; vec3 nodeVar14; vec4 nodeVar15; vec4 nodeVar16; vec4 nodeVar17; vec4 nodeVar18; float nodeVar19; float nodeVar20; float nodeVar21; 
 // codes
 
 // variables
@@ -117,21 +117,48 @@ void main() {
 	#include <logdepthbuf_fragment>
 	#include <map_fragment>
 	#include <color_fragment>
-nodeVar0 = ( nodeVary0.y / 2.0 );
-	nodeVar1 = (mix(vec4( 0.6431372549019608, 0.9254901960784314, 0.17254901960784313, 1 ), vec4( 0.9333333333333333, 0.11372549019607843, 0.7607843137254902, 1 ), vec4( vec3( nodeVar0 ), 1.0 )));
+nodeVar0 = (nodeVary0 * vec2( 2, 2 ) + vec2( 0, 0 ));
+	nodeVar1 = ( texture2D( rockCR, nodeVar0 ) );
+	nodeVar2 = ( texture2D( grassCR, nodeVar0 ) );
+	nodeVar3 = ( texture2D( snowCR, nodeVar0 ) );
+	nodeVar4 = ( nodeVary1.y - 12.0 );
+	nodeVar5 = exp2( nodeVar4 );
+	nodeVar6 = ( nodeVar5 / 80.0 );
+	nodeVar7 = clamp( nodeVar6, 0.0, 1.0 );
+	nodeVar8 = (mix(nodeVar2, nodeVar3, vec4( vec3( nodeVar7 ), 1.0 )));
 		
-	nodeVar2 = ( nodeVar1.xyz * vec3( 1, 1, 1 ) );
+	nodeVar9 = (normalize(nodeVary2));
+	nodeVar10 = normalize(nodeVar9);
+	nodeVar11 = ( nodeVar10.y / 0.3 );
+	nodeVar12 = clamp( nodeVar11, 0.0, 1.0 );
+	nodeVar13 = (mix(nodeVar1, nodeVar8, vec4( vec3( nodeVar12 ), 1.0 )));
+		
+	nodeVar14 = ( nodeVar13.xyz * vec3( 1, 1, 1 ) );
 	
-	diffuseColor = vec4( nodeVar2, 1.0 );
+	diffuseColor = vec4( nodeVar14, 1.0 );
 
 	#include <alphamap_fragment>
 	#include <alphatest_fragment>
 	#include <roughnessmap_fragment>
-
-	roughnessFactor = 0.0;
+nodeVar16 = nodeVar1;
+	nodeVar17 = nodeVar2;
+	nodeVar18 = nodeVar3;
+	nodeVar19 = (mix(nodeVar17.w, nodeVar18.w, nodeVar7));
+		
+	nodeVar20 = (mix(nodeVar16.w, nodeVar19, nodeVar12));
+		
+	nodeVar21 = clamp( nodeVar20, 0.0, 1.0 );
+	
+	roughnessFactor = nodeVar21;
 
 	#include <metalnessmap_fragment>
 	#include <normal_fragment_begin>
+nodeVar15 = ( texture2D( grassNormal, nodeVar0 ) );
+	
+	vec3 mapN = nodeVar15.xyz * 2.0 - 1.0;
+	mapN.xy *= normalScale;
+	normal = normalize(vTBN * mapN);
+
 	
 	#include <clearcoat_normal_fragment_begin>
 	#include <clearcoat_normal_fragment_maps>
