@@ -3,34 +3,14 @@
 // <node_builder>
 
 // uniforms
-uniform sampler2D rock; uniform sampler2D grass; uniform sampler2D snow; uniform sampler2D rockN; uniform sampler2D grassN; uniform sampler2D snowN; uniform sampler2D rockR; uniform sampler2D grassR; uniform sampler2D snowR; 
+uniform sampler2D org; uniform sampler2D rainMix; uniform float _time; 
 // attributes
 
 // varys
-varying vec2 nodeVary0; varying vec3 nodeVary1; varying vec3 nodeVary2; varying vec3 nodeVary3; 
+varying vec2 nodeVary0; varying vec3 nodeVary1; varying vec3 nodeVary2; 
 // vars
-vec2 nodeVar0; vec4 nodeVar1; vec4 nodeVar2; vec4 nodeVar3; float nodeVar4; float nodeVar5; float nodeVar6; float nodeVar7; vec4 nodeVar8; vec3 nodeVar9; vec3 nodeVar10; float nodeVar11; float nodeVar12; vec4 nodeVar13; vec3 nodeVar14; vec4 nodeVar15; vec4 nodeVar16; vec4 nodeVar17; vec4 nodeVar18; vec4 nodeVar19; vec4 nodeVar20; vec4 nodeVar21; vec4 nodeVar22; vec4 nodeVar23; vec4 nodeVar24; vec4 nodeVar25; 
+vec4 nodeVar0; vec3 nodeVar1; vec4 nodeVar2; float nodeVar3; float nodeVar4; vec3 nodeVar5; vec3 nodeVar6; float nodeVar7; float nodeVar8; float nodeVar9; float nodeVar10; float nodeVar11; float nodeVar12; float nodeVar13; float nodeVar14; float nodeVar15; float nodeVar16; float nodeVar17; float nodeVar18; float nodeVar19; float nodeVar20; float nodeVar21; float nodeVar22; float nodeVar23; float nodeVar24; float nodeVar25; float nodeVar26; float nodeVar27; vec4 nodeVar28; vec4 nodeVar29; float nodeVar30; 
 // codes
-
-vec4 func_19d352d4_f5b0_4a58_9392_6d9eeebbf00a( float lerpValue, vec4 NormalA, vec4 NormalB){
-	float nodeVar_JCTteX0; float nodeVar_JCTteX1; float nodeVar_JCTteX2; float nodeVar_JCTteX3; float nodeVar_JCTteX4; vec4 nodeVar_JCTteX5; vec4 nodeVar_JCTteX6; vec4 nodeVar_JCTteX7; vec4 nodeVar_JCTteX8; vec4 nodeVar_JCTteX9; float nodeVar_JCTteX10; vec4 nodeVar_JCTteX11; vec4 nodeVar_JCTteX12; 
-	nodeVar_JCTteX0 = (dot(NormalA,NormalB));
-	nodeVar_JCTteX1 = clamp( nodeVar_JCTteX0, -1.0, 1.0 );
-	nodeVar_JCTteX2 = acos( nodeVar_JCTteX1 );
-	nodeVar_JCTteX3 = ( nodeVar_JCTteX2 * lerpValue );
-	nodeVar_JCTteX4 = cos( nodeVar_JCTteX3 );
-	nodeVar_JCTteX5 = ( NormalA * vec4( vec3( nodeVar_JCTteX4 ), 1.0 ) );
-	nodeVar_JCTteX6 = ( NormalA * vec4( vec3( 0.0 ), 1.0 ) );
-	nodeVar_JCTteX7 = ( vec4( vec3( nodeVar_JCTteX1 ), 1.0 ) * nodeVar_JCTteX6 );
-	nodeVar_JCTteX8 = ( NormalB - nodeVar_JCTteX7 );
-	nodeVar_JCTteX9 = (normalize(nodeVar_JCTteX8));
-	nodeVar_JCTteX10 = sin( nodeVar_JCTteX3 );
-	nodeVar_JCTteX11 = ( nodeVar_JCTteX9 * vec4( vec3( nodeVar_JCTteX10 ), 1.0 ) );
-	nodeVar_JCTteX12 = ( nodeVar_JCTteX5 + nodeVar_JCTteX11 );
-	
-	return nodeVar_JCTteX12;
-}
-
 
 // variables
 // </node_builder>
@@ -137,49 +117,51 @@ void main() {
 	#include <logdepthbuf_fragment>
 	#include <map_fragment>
 	#include <color_fragment>
-nodeVar0 = (nodeVary0 * vec2( 20, 20 ) + vec2( 0, 0 ));
-	nodeVar1 = ( texture2D( rock, nodeVar0 ) );
-	nodeVar2 = ( texture2D( grass, nodeVar0 ) );
-	nodeVar3 = ( texture2D( snow, nodeVar0 ) );
-	nodeVar4 = ( nodeVary1.y - 12.0 );
-	nodeVar5 = exp2( nodeVar4 );
-	nodeVar6 = ( nodeVar5 / 80.0 );
-	nodeVar7 = clamp( nodeVar6, 0.0, 1.0 );
-	nodeVar8 = (mix(nodeVar2, nodeVar3, vec4( vec3( nodeVar7 ), 1.0 )));
-		
-	nodeVar9 = (normalize(nodeVary2));
-	nodeVar10 = normalize(nodeVar9);
-	nodeVar11 = ( nodeVar10.y / 0.3 );
-	nodeVar12 = clamp( nodeVar11, 0.0, 1.0 );
-	nodeVar13 = (mix(nodeVar1, nodeVar8, vec4( vec3( nodeVar12 ), 1.0 )));
-		
-	nodeVar14 = ( nodeVar13.xyz * vec3( 1, 1, 1 ) );
+nodeVar0 = ( texture2D( org, nodeVary0 ) );
+	nodeVar1 = ( nodeVar0.xyz * vec3( 1, 1, 1 ) );
 	
-	diffuseColor = vec4( nodeVar14, 1.0 );
+	diffuseColor = vec4( nodeVar1, 1.0 );
 
 	#include <alphamap_fragment>
 	#include <alphatest_fragment>
 	#include <roughnessmap_fragment>
-nodeVar20 = ( texture2D( rockR, nodeVar0 ) );
-	nodeVar21 = ( texture2D( grassR, nodeVar0 ) );
-	nodeVar22 = ( texture2D( snowR, nodeVar0 ) );
-	nodeVar23 = (mix(nodeVar21, nodeVar22, vec4( vec3( nodeVar7 ), 1.0 )));
+nodeVar30 = (mix(0.003, 0.8, nodeVar23));
 		
-	nodeVar24 = (mix(nodeVar20, nodeVar23, vec4( vec3( nodeVar12 ), 1.0 )));
-		
-	nodeVar25 = clamp( nodeVar24, 0.0, 1.0 );
 	
-	roughnessFactor = nodeVar25.x;
+	roughnessFactor = nodeVar30;
 
 	#include <metalnessmap_fragment>
 	#include <normal_fragment_begin>
-nodeVar15 = ( texture2D( rockN, nodeVar0 ) );
-	nodeVar16 = ( texture2D( grassN, nodeVar0 ) );
-	nodeVar17 = ( texture2D( snowN, nodeVar0 ) );
-	nodeVar18 = func_19d352d4_f5b0_4a58_9392_6d9eeebbf00a(nodeVar7,nodeVar16,nodeVar17);
-	nodeVar19 = func_19d352d4_f5b0_4a58_9392_6d9eeebbf00a(nodeVar12,nodeVar15,nodeVar18);
+nodeVar2 = ( texture2D( rainMix, nodeVary0 ) );
+	nodeVar3 = ( nodeVar2.x * 2.0 );
+	nodeVar4 = ( nodeVar3 - 1.0 );
+	nodeVar5 = (normalize(nodeVary1));
+	nodeVar6 = normalize(nodeVar5);
+	nodeVar7 = ( nodeVar6.y + 1.0 );
+	nodeVar8 = ( nodeVar7 / 2.0 );
+	nodeVar9 = ( nodeVar2.w * 2.0 );
+	nodeVar10 = ( nodeVar9 - 1.0 );
+	nodeVar11 = ( nodeVar10 * -1.0 );
+	nodeVar12 = (pow(nodeVar11,10.0));
+	nodeVar13 = clamp( nodeVar12, 0.0, 1.0 );
+	nodeVar14 = ( _time * 1.0 );
+	nodeVar15 = nodeVar14;
+	nodeVar16 = sin( nodeVar15 );
+	nodeVar17 = ( nodeVar2.z - nodeVar16 );
+	nodeVar18 = abs( nodeVar17 );
+	nodeVar19 = clamp( nodeVar10, 0.0, 1.0 );
+	nodeVar20 = ( nodeVar18 * nodeVar19 );
+	nodeVar21 = ( nodeVar13 + nodeVar20 );
+	nodeVar22 = clamp( nodeVar21, 0.0, 1.0 );
+	nodeVar23 = ( nodeVar8 * nodeVar22 );
+	nodeVar24 = ( nodeVar4 * nodeVar23 );
+	nodeVar25 = ( nodeVar2.y * 2.0 );
+	nodeVar26 = ( nodeVar25 - 1.0 );
+	nodeVar27 = ( nodeVar23 * nodeVar26 );
+	nodeVar28 = vec4(nodeVar24,nodeVar27,1.0,0.0);
+	nodeVar29 = (normalize(nodeVar28));
 	
-	vec3 mapN = nodeVar19.xyz * 2.0 - 1.0;
+	vec3 mapN = nodeVar29.xyz * 2.0 - 1.0;
 	mapN.xy *= normalScale;
 	normal = normalize(vTBN * mapN);
 
